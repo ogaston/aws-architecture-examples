@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static Web Hosting with CDN</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: system-ui, sans-serif; background: #f4f6f8; color: #1a1a2e; }
+        nav { background: #1a1a2e; padding: 1rem 2rem; display: flex; gap: 1.5rem; }
+        nav a { color: #a0aec0; text-decoration: none; font-weight: 500; }
+        nav a.active, nav a:hover { color: #fff; }
+        main { max-width: 640px; margin: 3rem auto; padding: 0 1.5rem; }
+        h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
+        p { color: #555; line-height: 1.6; margin-top: 0.75rem; }
+        .card { background: #fff; border-radius: 8px; padding: 2rem; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+        .badge { display: inline-block; background: #ebf4ff; color: #2b6cb0; font-size: 0.75rem;
+                  font-weight: 600; padding: 0.25rem 0.6rem; border-radius: 999px; margin-top: 1rem;
+                  text-decoration: none; }
+        .badge:hover { background: #bee3f8; }
+        ul { margin-top: 0.75rem; padding-left: 1.25rem; color: #555; line-height: 1.8; }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <nav>
+            <a v-for="link in links" :key="link.path"
+               :href="'#' + link.path"
+               :class="{ active: page === link.path }">
+                {{ link.label }}
+            </a>
+        </nav>
+
+        <main>
+            <div class="card" v-if="page === 'home'">
+                <h1>Static Web Hosting with CDN</h1>
+                <p>A zero-build single-page app served from object storage and delivered globally via a CDN.</p>
+                <a class="badge" href="https://ogaston.com" target="_blank" rel="noopener">ogaston.com</a>
+            </div>
+
+            <div class="card" v-else-if="page === 'about'">
+                <h1>About</h1>
+                <p>This demo is a single <code>index.html</code> file. Vue is fetched from a public CDN at runtime — no bundler, no <code>node_modules</code>, no build step.</p>
+                <ul>
+                    <li>Static assets stored in object storage</li>
+                    <li>CDN edge locations cache and serve content</li>
+                    <li>Client-side routing via URL hash</li>
+                </ul>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const { createApp, ref, onMounted, onUnmounted } = Vue;
+
+        createApp({
+            setup() {
+                const links = [
+                    { path: 'home',  label: 'Home' },
+                    { path: 'about', label: 'About' },
+                ];
+                const page = ref('home');
+
+                const syncPage = () => {
+                    page.value = location.hash.replace('#', '') || 'home';
+                };
+
+                onMounted(() => {
+                    syncPage();
+                    window.addEventListener('hashchange', syncPage);
+                });
+                onUnmounted(() => window.removeEventListener('hashchange', syncPage));
+
+                return { links, page };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
