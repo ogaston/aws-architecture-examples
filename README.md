@@ -10,8 +10,8 @@ A curated reference repository of commonly used AWS architecture patterns, trade
 
 | Scenario | Primary Services | Status |
 | :--- | :--- | :--- |
-| **[Static Web Hosting & CDN](foundational/static-web-hosting-cdn/README.md)** | S3, CloudFront, Route 53, ACM | Not Ready |
-| **[Two-Tier Resilient Web App](foundational/two-tier-high-available-api/README.md)** | ALB, EC2 ASG, RDS Multi-AZ | Ready |
+| **[Static Web Hosting & CDN](foundational/static-web-hosting-cdn/README.md)** | S3, CloudFront, Route 53, ACM | Ready |
+| **[Two-Tier Resilient Web App](foundational/two-tier-high-available-api/README.md)** | ALB, EC2 ASG, RDS Multi-AZ | NotReady |
 | **Serverless REST API** | API Gateway, Lambda, DynamoDB | Not Ready |
 | **Storage Lifecycle & Archival** | S3 Standard/IA/Glacier | Not Ready |
 
